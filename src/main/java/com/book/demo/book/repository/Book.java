@@ -29,4 +29,16 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
+
+    public void rentSuccess() {
+        this.rentCnt++;
+    }
+
+    public BookRent makeBookRent(Account rentAccount) {
+        return BookRent.builder()
+                .book(this)
+                .account(rentAccount)
+                .returnFlag(false)
+                .build();
+    }
 }

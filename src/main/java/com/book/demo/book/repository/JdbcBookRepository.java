@@ -34,6 +34,7 @@ public class JdbcBookRepository {
             bookDto.setPrice(rs.getInt("price"));
             bookDto.setAccountId(rs.getLong("account_id"));
             bookDto.setAccountName(rs.getString("account_name"));
+            bookDto.setRentCnt(rs.getInt("rent_cnt"));
             return bookDto;
         };
     }

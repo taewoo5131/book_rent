@@ -14,6 +14,7 @@ public enum Error {
 
     // book
     , BOOK_ENTRUST_FAIL(HttpStatus.BAD_REQUEST, "UD-004", "book entrust fail")
+    , BOOK_RENT_FAIL(HttpStatus.BAD_REQUEST, "UD-005", "book rent fail")
     ;
     private final HttpStatus httpStatus;
     private final String errorCode;

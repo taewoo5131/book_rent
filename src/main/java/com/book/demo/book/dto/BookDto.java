@@ -17,6 +17,7 @@ public class BookDto {
     private int price;
     private Long accountId;
     private String accountName;
+    private int rentCnt;
 
     public BookDto(Book book) {
         this.id = book.getId();
@@ -25,5 +26,6 @@ public class BookDto {
         this.price = book.getPrice();
         this.accountId = book.getAccount().getId();
         this.accountName = book.getAccount().getName();
+        this.rentCnt = book.getRentCnt();
     }
 }

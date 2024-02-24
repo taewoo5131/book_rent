@@ -1,8 +1,10 @@
 package com.book.demo.book.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class BookHandler {
 
     private final String RENT_DESC = "0";
@@ -41,6 +43,7 @@ public class BookHandler {
             sb.append("ORDER BY b.created_date DESC");
         }
         sb.append(" LIMIT ? , 20");
+        log.info(sb.toString());
         return sb.toString();
     }
 }

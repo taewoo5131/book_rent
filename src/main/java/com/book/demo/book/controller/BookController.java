@@ -1,6 +1,7 @@
 package com.book.demo.book.controller;
 
 import com.book.demo.book.dto.BookEntrustRequestDto;
+import com.book.demo.book.dto.BookRequestDto;
 import com.book.demo.book.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,15 @@ public class BookController {
     @GetMapping
     public ResponseEntity bookList(@RequestParam String pageNo, @RequestParam String sortKind) {
         return bookService.findAllBook(pageNo, sortKind);
+    }
+
+    @PostMapping("/rent")
+    public ResponseEntity bookRent(@RequestBody BookRequestDto requestDto) {
+        return bookService.rentBook(requestDto);
+    }
+
+    @PostMapping("/return")
+    public ResponseEntity bookReturn(@RequestBody BookRequestDto requestDto) {
+        return bookService.returnBook(requestDto);
     }
 }
