@@ -10,9 +10,9 @@ import java.util.Map;
 
 @Service
 public interface AccountService {
-    public ResponseEntity saveAccount(AccountSaveRequestDto requestDto);
+    ResponseEntity saveAccount(AccountSaveRequestDto requestDto);
 
-    public ResponseEntity loginAccount(AccountLoginRequestDto requestdto);
+    ResponseEntity loginAccount(AccountLoginRequestDto requestdto);
 
-    public ResponseEntity reLoginAccount(AccountReLoginRequestDto requestDto);
+    ResponseEntity reLoginAccount(AccountReLoginRequestDto requestDto);
 }

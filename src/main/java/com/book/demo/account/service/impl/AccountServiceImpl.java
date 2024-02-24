@@ -1,5 +1,6 @@
 package com.book.demo.account.service.impl;
 
+import com.book.demo.account.dto.AccountDto;
 import com.book.demo.account.dto.AccountLoginRequestDto;
 import com.book.demo.account.dto.AccountReLoginRequestDto;
 import com.book.demo.account.dto.AccountSaveRequestDto;
@@ -40,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
             return Result.makeError(Error.ACCOUNT_SAVE_FAIL);
         }
         Account account = accountRepository.save(requestDto.toEntity(passwordEncoder.encode(requestDto.getPassword())));
-        return Result.makeResult(HttpStatus.OK, account.getId());
+        return Result.makeResult(HttpStatus.OK, new AccountDto(account.getId(), account.getName(),account.getEmail()));
     }
 
     @Override
@@ -84,7 +85,11 @@ public class AccountServiceImpl implements AccountService {
         String accessToken = jwtTokenProvider.makeAccessJwtToken(account.getId());
         String refreshToken = jwtTokenProvider.makeRefreshJwtToken();
         account.loginSuccess(refreshToken);
-        return new JwtToken("Bearer",accessToken,refreshToken);
+        JwtToken jwtToken = new JwtToken("Bearer", accessToken, refreshToken);
+        jwtToken.setId(account.getId());
+        jwtToken.setName(account.getName());
+        jwtToken.setEmail(account.getEmail());
+        return jwtToken;
     }
 
 

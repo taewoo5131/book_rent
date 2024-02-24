@@ -1,13 +1,13 @@
 package com.book.demo.common.token;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import com.book.demo.account.dto.AccountDto;
+import lombok.*;
 
 @Builder
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
-public class JwtToken {
+public class JwtToken extends AccountDto {
     private String grantType;
     private String accessToken;
     private String refreshToken;
