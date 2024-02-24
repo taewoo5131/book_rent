@@ -1,5 +1,6 @@
 package com.book.demo.account;
 
+import com.book.demo.account.dto.AccountLoginRequestDto;
 import com.book.demo.account.dto.AccountSaveRequestDto;
 import com.book.demo.account.repository.Account;
 import com.book.demo.account.repository.AccountRepository;
@@ -8,6 +9,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,5 +36,20 @@ public class AccountTest {
         // then
         List<Account> all = accountRepository.findAll();
         Assertions.assertThat(all.size()).isEqualTo(2);
+    }
+
+    @Test
+    @Transactional
+    public void 로그인() {
+        // given
+        AccountLoginRequestDto requestDto = new AccountLoginRequestDto();
+        requestDto.setEmail("udo@udo.com");
+        requestDto.setPassword("Udo1234");
+
+        // when
+        ResponseEntity response = accountService.loginAccount(requestDto);
+
+        // then
+        Assertions.assertThat(response.getStatusCode().value()).isEqualTo(HttpStatus.CREATED.value());
     }
 }
