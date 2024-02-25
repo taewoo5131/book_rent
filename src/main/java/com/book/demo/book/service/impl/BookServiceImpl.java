@@ -18,6 +18,9 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -73,6 +76,9 @@ public class BookServiceImpl implements BookService {
             BookRent bookRent = book.makeBookRent(account);
             bookRentRepository.save(bookRent);
         }
+        // 10초 뒤에 자동 반납 처리
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService.schedule(() -> bookHandler.returnBookHandler(requestDto),10, TimeUnit.SECONDS);
 
         return Result.makeResult(HttpStatus.OK, bookIdList);
     }
@@ -80,12 +86,6 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public ResponseEntity returnBook(BookRequestDto requestDto) {
-        Long accountId = requestDto.getAccountId();
-        List<Long> bookIdList = requestDto.getBookIdList();
-        for (Long bookId : bookIdList) {
-            BookRent bookRent = bookRentRepository.findByAccountIdAndBookIdAndReturnFlag(accountId, bookId, false);
-            bookRent.returnBook();
-        }
-        return Result.makeResult(HttpStatus.OK, bookIdList);
+        return Result.makeResult(HttpStatus.OK, bookHandler.returnBookHandler(requestDto));
     }
 }

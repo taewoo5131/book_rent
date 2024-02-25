@@ -1,11 +1,21 @@
 package com.book.demo.book.service.impl;
 
+import com.book.demo.book.dto.BookRequestDto;
+import com.book.demo.book.repository.BookRent;
+import com.book.demo.book.repository.BookRentRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class BookHandler {
+    private final BookRentRepository bookRentRepository;
 
     private final String RENT_DESC = "0";
     private final String PRICE_ASC = "1";
@@ -45,5 +55,16 @@ public class BookHandler {
         sb.append(" LIMIT ? , 20");
         log.info(sb.toString());
         return sb.toString();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public List<Long> returnBookHandler(BookRequestDto requestDto) {
+        Long accountId = requestDto.getAccountId();
+        List<Long> bookIdList = requestDto.getBookIdList();
+        for (Long bookId : bookIdList) {
+            BookRent bookRent = bookRentRepository.findByAccountIdAndBookIdAndReturnFlag(accountId, bookId, false);
+            bookRent.returnBook();
+        }
+        return bookIdList;
     }
 }
